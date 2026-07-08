@@ -49,7 +49,6 @@ export class Preloader extends Scene {
     this.load.image('river-bg', 'assets/hub/river-bg.png');
 
     // 首页建筑精灵图（已去背景透明 PNG）
-    // 使用 LINEAR 过滤保证缩放平滑
     this.load.image('sprite-dock', 'assets/hub/dock.png');
     this.load.image('sprite-farm', 'assets/hub/farm.png');
     this.load.image('sprite-bamboo', 'assets/hub/bamboo.png');
@@ -57,40 +56,6 @@ export class Preloader extends Scene {
     this.load.image('sprite-shop', 'assets/hub/shop.png');
     this.load.image('sprite-pavilion', 'assets/hub/pavilion.png');
     this.load.image('sprite-boat', 'assets/hub/boat.png');
-
-    // 河畔牧场关卡背景
-    this.load.image('farm-bg', 'assets/farm/farm-bg.png');
-
-    // 河畔牧场精灵图（山羊）
-    this.load.image('goat-stand', 'assets/farm/goat-stand.png');
-    this.load.image('goat-graze', 'assets/farm/goat-graze.png');
-    this.load.image('goat-left', 'assets/farm/goat-walk-left.png');
-    this.load.image('goat-right', 'assets/farm/goat-walk-right.png');
-    // 河畔牧场精灵图（兔子）
-    this.load.image('rabbit-graze', 'assets/farm/rabbit-graze.png');
-    this.load.image('rabbit-left', 'assets/farm/rabbit-walk-left.png');
-    this.load.image('rabbit-right', 'assets/farm/rabbit-walk-right.png');
-    this.load.image('wool-ball', 'assets/farm/woolball.png');
-    this.load.image('wool-glowing', 'assets/farm/woolballshine.png');
-    this.load.image('zhukuang', 'assets/farm/zhukuang.png');
-    this.load.image('comb', 'assets/farm/comb2.png');
-
-    // 天目竹林关卡背景
-    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.png');
-
-    // 天目竹林精灵图
-    this.load.image('knife', 'assets/bamboo/knife.png');
-    this.load.image('bamboo-green', 'assets/bamboo/bamboogreen2.png');
-    this.load.image('bamboo-brown', 'assets/bamboo/bamboobrown2.png');
-
-    // 临水作坊关卡背景
-    this.load.image('workshop-bg', 'assets/workshop/workshop-bg.png');
-    // 作坊木桌
-    this.load.image('workshop-table', 'assets/workshop/table.png');
-    // 善琏笔庄关卡背景
-    this.load.image('shop-bg', 'assets/shop/shop-bg.png');
-    // 挥墨亭关卡背景
-    this.load.image('pavilion-bg', 'assets/pavilion/pavilion-bg.png');
   }
 
   create(): void {

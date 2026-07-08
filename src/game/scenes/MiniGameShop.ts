@@ -5,6 +5,10 @@ export class MiniGameShop extends Scene {
     super('MiniGameShop');
   }
 
+  preload(): void {
+    this.load.image('shop-bg', 'assets/shop/shop-bg.png');
+  }
+
   create(): void {
     const { width, height } = this.cameras.main;
 

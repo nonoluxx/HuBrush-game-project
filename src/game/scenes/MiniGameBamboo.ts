@@ -28,6 +28,13 @@ export class MiniGameBamboo extends Scene {
 
   private introGroup: GameObjects.Group | null = null;
   private gameUI: GameObjects.Container | null = null;
+
+  preload(): void {
+    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.png');
+    this.load.image('knife', 'assets/bamboo/knife.png');
+    this.load.image('bamboo-green', 'assets/bamboo/bamboogreen2.png');
+    this.load.image('bamboo-brown', 'assets/bamboo/bamboobrown2.png');
+  }
   private resultGroup: GameObjects.Group | null = null;
 
   // 竹竿

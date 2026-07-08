@@ -5,6 +5,11 @@ export class MiniGameWorkshop extends Scene {
     super('MiniGameWorkshop');
   }
 
+  preload(): void {
+    this.load.image('workshop-bg', 'assets/workshop/workshop-bg.png');
+    this.load.image('workshop-table', 'assets/workshop/table.png');
+  }
+
   create(): void {
     const { width, height } = this.cameras.main;
 

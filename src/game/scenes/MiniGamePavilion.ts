@@ -5,6 +5,10 @@ export class MiniGamePavilion extends Scene {
     super('MiniGamePavilion');
   }
 
+  preload(): void {
+    this.load.image('pavilion-bg', 'assets/pavilion/pavilion-bg.png');
+  }
+
   create(): void {
     const { width, height } = this.cameras.main;
 

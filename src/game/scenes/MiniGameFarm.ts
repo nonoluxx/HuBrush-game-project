@@ -62,7 +62,20 @@ export class MiniGameFarm extends Scene {
   }
 
   preload(): void {
-    // 牧场音频按需加载（不阻塞主菜单启动）
+    // 牧场图片按需加载
+    this.load.image('farm-bg', 'assets/farm/farm-bg.png');
+    this.load.image('goat-stand', 'assets/farm/goat-stand.png');
+    this.load.image('goat-graze', 'assets/farm/goat-graze.png');
+    this.load.image('goat-left', 'assets/farm/goat-walk-left.png');
+    this.load.image('goat-right', 'assets/farm/goat-walk-right.png');
+    this.load.image('rabbit-graze', 'assets/farm/rabbit-graze.png');
+    this.load.image('rabbit-left', 'assets/farm/rabbit-walk-left.png');
+    this.load.image('rabbit-right', 'assets/farm/rabbit-walk-right.png');
+    this.load.image('wool-ball', 'assets/farm/woolball.png');
+    this.load.image('wool-glowing', 'assets/farm/woolballshine.png');
+    this.load.image('zhukuang', 'assets/farm/zhukuang.png');
+    this.load.image('comb', 'assets/farm/comb2.png');
+    // 牧场音频
     this.load.audio('farm-bgm', 'assets/audio/farm-background.mp3');
     this.load.audio('farm-intro', 'assets/audio/牧场开场.mp3');
   }
