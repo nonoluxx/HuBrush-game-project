@@ -1,0 +1,17 @@
+{
+  "name": "hubi-game",
+  "description": "湖笔制作技艺互动研学小游戏 - Phaser 4 + Vite + TypeScript",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --config vite/config.dev.mjs",
+    "build": "vite build --config vite/config.prod.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2",
+    "vite": "^6.3.1"
+  },
+  "dependencies": {
+    "phaser": "4.0.0"
+  }
+}
