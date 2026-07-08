@@ -54,6 +54,11 @@ export class HubScene extends Scene {
     super('HubScene');
   }
 
+  preload(): void {
+    // 背景音乐按需加载（不阻塞启动）
+    this.load.audio('main-bgm', 'assets/audio/main-background.mp3');
+  }
+
   create(): void {
     const { width, height } = this.cameras.main;
 

@@ -61,6 +61,12 @@ export class MiniGameFarm extends Scene {
     super('MiniGameFarm');
   }
 
+  preload(): void {
+    // 牧场音频按需加载（不阻塞主菜单启动）
+    this.load.audio('farm-bgm', 'assets/audio/farm-background.mp3');
+    this.load.audio('farm-intro', 'assets/audio/牧场开场.mp3');
+  }
+
   create(): void {
     const { width, height } = this.cameras.main;
     this.add.image(width / 2, height / 2, 'farm-bg')
