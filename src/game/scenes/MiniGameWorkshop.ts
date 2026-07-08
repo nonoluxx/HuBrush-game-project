@@ -18,7 +18,7 @@ export class MiniGameWorkshop extends Scene {
 
     // 两个木桌：画面下边 1/3 区域，居中排列
     const tableY = height * 0.85; // 下移
-    const tableScale = 0.4; // 1024→约410px
+    const tableScale = 0.8; // 512→约410px
     this.add.image(width * 0.34, tableY, 'workshop-table').setScale(tableScale).setDepth(10);
     this.add.image(width * 0.66, tableY, 'workshop-table').setScale(tableScale).setDepth(10);
 

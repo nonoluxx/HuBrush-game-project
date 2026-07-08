@@ -218,7 +218,7 @@ export class MiniGameFarm extends Scene {
 
     this.createBaskets(width, height);
 
-    this.combSprite = this.add.image(-100, -100, 'comb').setDepth(99).setScale(0.04);
+    this.combSprite = this.add.image(-100, -100, 'comb').setDepth(99).setScale(0.16);
     this.brushTrail?.destroy();
     this.brushTrail = this.add.graphics().setDepth(98);
 
@@ -263,8 +263,8 @@ export class MiniGameFarm extends Scene {
   // ================================================================
   private createBaskets(_w: number, h: number): void {
     const basketY = h - 90;
-    const leftBasket = this.add.image(this.basketLeft.x, basketY, 'zhukuang').setDepth(101).setScale(0.06);
-    const rightBasket = this.add.image(this.basketRight.x, basketY, 'zhukuang').setDepth(101).setScale(0.06);
+    const leftBasket = this.add.image(this.basketLeft.x, basketY, 'zhukuang').setDepth(101).setScale(0.18);
+    const rightBasket = this.add.image(this.basketRight.x, basketY, 'zhukuang').setDepth(101).setScale(0.18);
 
     const leftLabel = this.add.text(this.basketLeft.x, basketY + 55, '普通毛料', {
       fontSize: '13px', color: '#f0e6d3',
@@ -297,7 +297,7 @@ export class MiniGameFarm extends Scene {
   }
 
   private getAnimalScale(type: 'goat' | 'rabbit'): number {
-    return type === 'goat' ? 0.12 : 0.06;
+    return type === 'goat' ? 0.24 : 0.12;
   }
 
   private createAnimal(w: number, h: number, type: 'goat' | 'rabbit'): void {
@@ -423,7 +423,7 @@ export class MiniGameFarm extends Scene {
     const fromY = ad.container.y - 20;
 
     const woolKey = isPremium ? 'wool-glowing' : 'wool-ball';
-    const woolScale = isPremium ? 0.06 : 0.04;
+    const woolScale = isPremium ? 0.12 : 0.16;
     const wool = this.add.image(fromX, fromY, woolKey).setScale(woolScale).setDepth(98);
     this.tweens.add({
       targets: wool,

@@ -181,7 +181,7 @@ export class MiniGameBamboo extends Scene {
 
     // ── 小刀精灵图（替换鼠标） ──
     this.knife?.destroy();
-    this.knife = this.add.image(0, 0, 'knife').setDepth(101).setScale(0.06);
+    this.knife = this.add.image(0, 0, 'knife').setDepth(101).setScale(0.24);
 
     // ── 输入 ──
     this.game.canvas.style.cursor = 'none';
@@ -330,8 +330,8 @@ export class MiniGameBamboo extends Scene {
     b.sprite.destroy();
     const texKey = b.isGood ? 'bamboo-green' : 'bamboo-brown';
 
-    const half1 = this.add.image(b.x, b.y, texKey).setDepth(98).setScale(0.06).setCrop(0, 0, 1024, 2048);
-    const half2 = this.add.image(b.x, b.y, texKey).setDepth(98).setScale(0.06).setCrop(1024, 0, 1024, 2048);
+    const half1 = this.add.image(b.x, b.y, texKey).setDepth(98).setScale(0.24).setCrop(0, 0, 256, 512);
+    const half2 = this.add.image(b.x, b.y, texKey).setDepth(98).setScale(0.24).setCrop(256, 0, 256, 512);
 
     this.tweens.add({
       targets: half1, x: b.x - 60, y: b.y + 30, alpha: 0, duration: 400,
@@ -385,7 +385,7 @@ export class MiniGameBamboo extends Scene {
     const isGood = Math.random() < 0.25; // 25% 良材
 
     const texKey = isGood ? 'bamboo-green' : 'bamboo-brown';
-    const sprite = this.add.image(x, y, texKey).setDepth(50).setScale(0.06);
+    const sprite = this.add.image(x, y, texKey).setDepth(50).setScale(0.24);
     const rotSpeed = (Math.random() - 0.5) * 0.03;
 
     this.bambooList.push({ sprite, x, y, speed, rotation: 0, rotSpeed, isGood, cut: false });

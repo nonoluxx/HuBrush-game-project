@@ -251,7 +251,7 @@ export class HubScene extends Scene {
 
     // 使用精灵图替代手绘图形
     const boatImg = this.add.image(0, 0, 'sprite-boat');
-    boatImg.setScale(0.06);
+    boatImg.setScale(0.24);
     this.boatImg = boatImg;
 
     this.boat = this.add.container(startPoint.x, startPoint.y, [boatImg]);
@@ -288,13 +288,13 @@ export class HubScene extends Scene {
         pavilion: 'sprite-pavilion',
       };
 
-      // 使用精灵图（2048x2048，2倍高清），部分建筑放大
+      // 使用精灵图（512x512 压缩后），部分建筑放大
       const spriteKey = spriteMap[lm.key];
       if (spriteKey) {
         const sprite = this.add.image(0, 0, spriteKey);
-        // 各建筑缩放比例（2048→约100px: 0.05, 约120px: 0.06, 约160px: 0.08）
+        // 各建筑缩放比例（512px 精灵图）
         const bigSet = ['shop', 'bamboo'];
-        const scale = bigSet.includes(lm.key) ? 0.08 : (lm.key === 'farm' ? 0.16 : (lm.key === 'dock' ? 0.10 : (lm.key === 'workshop' ? 0.06 : 0.05)));
+        const scale = bigSet.includes(lm.key) ? 0.32 : (lm.key === 'farm' ? 0.32 : (lm.key === 'dock' ? 0.40 : (lm.key === 'workshop' ? 0.24 : 0.20)));
         sprite.setScale(scale);
         sprite.disableInteractive();
         container.add([sprite]);
