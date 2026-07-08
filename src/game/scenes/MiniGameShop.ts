@@ -5,17 +5,34 @@ export class MiniGameShop extends Scene {
     super('MiniGameShop');
   }
 
-  preload(): void {
+  create(): void {
+    const { width, height } = this.cameras.main;
+
+    const loadingText = this.add.text(width / 2, height / 2, '正在进入善琏笔庄...', {
+      fontSize: '24px', color: '#d4c4a8',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
     this.load.image('shop-bg', 'assets/shop/shop-bg.png');
+
+    this.load.on('loaderror', (file: any) => {
+      console.warn('[Shop] 加载失败:', file.key);
+    });
+
+    this.load.once('complete', () => {
+      loadingText.destroy();
+      this.renderScene();
+    });
+
+    this.load.start();
   }
 
-  create(): void {
+  private renderScene(): void {
     const { width, height } = this.cameras.main;
 
     this.add.image(width / 2, height / 2, 'shop-bg')
       .setDisplaySize(width, height);
 
-    // 浮动标签（桌子已在背景图中绘制）
     const labelY = height * 0.85 - 200;
     const indicatorStyle = {
       fontSize: '28px',
@@ -33,7 +50,6 @@ export class MiniGameShop extends Scene {
     this.tweens.add({ targets: leftLabel, y: labelY - 10, alpha: 0.4, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     this.tweens.add({ targets: rightLabel, y: labelY - 10, alpha: 0.4, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    // 右上角「回到小船」按钮
     const backBtn = this.add.text(width - 20, 30, '回到小船', {
       fontSize: '16px', color: '#d4c4a8',
       fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',

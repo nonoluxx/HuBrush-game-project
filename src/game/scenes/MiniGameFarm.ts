@@ -61,8 +61,16 @@ export class MiniGameFarm extends Scene {
     super('MiniGameFarm');
   }
 
-  preload(): void {
-    // 牧场图片按需加载
+  create(): void {
+    const { width, height } = this.cameras.main;
+
+    // 加载提示
+    const loadingText = this.add.text(width / 2, height / 2, '正在进入河畔牧场...', {
+      fontSize: '24px', color: '#d4c4a8',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
+    // 显式加载资源（避免 preload 在 scene.start 切换时卡住）
     this.load.image('farm-bg', 'assets/farm/farm-bg.png');
     this.load.image('goat-stand', 'assets/farm/goat-stand.png');
     this.load.image('goat-graze', 'assets/farm/goat-graze.png');
@@ -75,17 +83,27 @@ export class MiniGameFarm extends Scene {
     this.load.image('wool-glowing', 'assets/farm/woolballshine.png');
     this.load.image('zhukuang', 'assets/farm/zhukuang.png');
     this.load.image('comb', 'assets/farm/comb2.png');
-    // 牧场音频
     this.load.audio('farm-bgm', 'assets/audio/farm-background.mp3');
     this.load.audio('farm-intro', 'assets/audio/牧场开场.mp3');
+
+    // 容错：单个文件加载失败不阻塞
+    this.load.on('loaderror', (file: any) => {
+      console.warn('[Farm] 加载失败:', file.key);
+    });
+
+    this.load.once('complete', () => {
+      loadingText.destroy();
+      this.renderScene();
+    });
+
+    this.load.start();
   }
 
-  create(): void {
+  private renderScene(): void {
     const { width, height } = this.cameras.main;
     this.add.image(width / 2, height / 2, 'farm-bg')
       .setDisplaySize(width, height).setDepth(0);
 
-    // 场景关闭时重置光标，防止 'none' 残留到其他场景
     this.events.on('shutdown', () => {
       this.game.canvas.style.cursor = "url('assets/hub/cursor-brush-32.png') 2 28, auto";
     });

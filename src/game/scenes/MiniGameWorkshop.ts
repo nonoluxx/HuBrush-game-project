@@ -5,24 +5,40 @@ export class MiniGameWorkshop extends Scene {
     super('MiniGameWorkshop');
   }
 
-  preload(): void {
+  create(): void {
+    const { width, height } = this.cameras.main;
+
+    const loadingText = this.add.text(width / 2, height / 2, '正在进入临水作坊...', {
+      fontSize: '24px', color: '#d4c4a8',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
     this.load.image('workshop-bg', 'assets/workshop/workshop-bg.png');
     this.load.image('workshop-table', 'assets/workshop/table.png');
+
+    this.load.on('loaderror', (file: any) => {
+      console.warn('[Workshop] 加载失败:', file.key);
+    });
+
+    this.load.once('complete', () => {
+      loadingText.destroy();
+      this.renderScene();
+    });
+
+    this.load.start();
   }
 
-  create(): void {
+  private renderScene(): void {
     const { width, height } = this.cameras.main;
 
     this.add.image(width / 2, height / 2, 'workshop-bg')
       .setDisplaySize(width, height);
 
-    // 两个木桌：画面下边 1/3 区域，居中排列
-    const tableY = height * 0.85; // 下移
-    const tableScale = 0.8; // 512→约410px
+    const tableY = height * 0.85;
+    const tableScale = 0.8;
     this.add.image(width * 0.34, tableY, 'workshop-table').setScale(tableScale).setDepth(10);
     this.add.image(width * 0.66, tableY, 'workshop-table').setScale(tableScale).setDepth(10);
 
-    // 桌子大小 1024×0.4=410px，标签放在桌子顶部上方
     const labelY = tableY - 200;
     const indicatorStyle = {
       fontSize: '28px',
@@ -37,11 +53,9 @@ export class MiniGameWorkshop extends Scene {
     const rightLabel = this.add.text(width * 0.66, labelY, '配 毫', indicatorStyle)
       .setOrigin(0.5).setDepth(20);
 
-    // 浮动动画（与主页面"点击探索"一致）
     this.tweens.add({ targets: leftLabel, y: labelY - 10, alpha: 0.4, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     this.tweens.add({ targets: rightLabel, y: labelY - 10, alpha: 0.4, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    // 右上角「回到小船」按钮
     const backBtn = this.add.text(width - 20, 30, '回到小船', {
       fontSize: '16px', color: '#d4c4a8',
       fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',

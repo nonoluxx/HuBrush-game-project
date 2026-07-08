@@ -28,13 +28,6 @@ export class MiniGameBamboo extends Scene {
 
   private introGroup: GameObjects.Group | null = null;
   private gameUI: GameObjects.Container | null = null;
-
-  preload(): void {
-    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.png');
-    this.load.image('knife', 'assets/bamboo/knife.png');
-    this.load.image('bamboo-green', 'assets/bamboo/bamboogreen2.png');
-    this.load.image('bamboo-brown', 'assets/bamboo/bamboobrown2.png');
-  }
   private resultGroup: GameObjects.Group | null = null;
 
   // 竹竿
@@ -57,10 +50,34 @@ export class MiniGameBamboo extends Scene {
 
   create(): void {
     const { width, height } = this.cameras.main;
+
+    const loadingText = this.add.text(width / 2, height / 2, '正在进入天目竹林...', {
+      fontSize: '24px', color: '#d4c4a8',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
+    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.png');
+    this.load.image('knife', 'assets/bamboo/knife.png');
+    this.load.image('bamboo-green', 'assets/bamboo/bamboogreen2.png');
+    this.load.image('bamboo-brown', 'assets/bamboo/bamboobrown2.png');
+
+    this.load.on('loaderror', (file: any) => {
+      console.warn('[Bamboo] 加载失败:', file.key);
+    });
+
+    this.load.once('complete', () => {
+      loadingText.destroy();
+      this.renderScene();
+    });
+
+    this.load.start();
+  }
+
+  private renderScene(): void {
+    const { width, height } = this.cameras.main;
     this.add.image(width / 2, height / 2, 'bamboo-bg')
       .setDisplaySize(width, height).setDepth(0);
 
-    // 场景关闭时重置光标，防止 'none' 残留到其他场景
     this.events.on('shutdown', () => {
       this.game.canvas.style.cursor = "url('assets/hub/cursor-brush-32.png') 2 28, auto";
     });
