@@ -45,7 +45,27 @@ export class Preloader extends Scene {
       percentText.setText(`${Math.floor(value * 100)}%`);
     });
 
-    // ====== 加载游戏素材 ======
+    // 加载失败时的容错处理
+    this.load.on('loaderror', (file: { key: string; url: string }) => {
+      console.warn('[Preloader] 加载失败:', file.key, file.url);
+    });
+
+    // 超时保护：3秒后无论如何进入 HubScene
+    let loaded = false;
+    const timeout = this.time.delayedCall(3000, () => {
+      if (!loaded) {
+        console.warn('[Preloader] 加载超时，强制进入 HubScene');
+        loaded = true;
+        this.scene.start('HubScene');
+      }
+    });
+
+    this.load.on('complete', () => {
+      if (!loaded) {
+        loaded = true;
+        timeout.destroy();
+      }
+    });
     // 背景音乐
     this.load.audio('main-bgm', 'assets/audio/main-background.mp3');
     this.load.audio('farm-bgm', 'assets/audio/farm-background.mp3');
