@@ -31,6 +31,7 @@ interface AnimalData {
   maxYield: number;
   stateTimer: number;
   direction: number;
+  hasBleated: boolean;
 }
 
 /**
@@ -64,14 +65,36 @@ export class MiniGameFarm extends Scene {
   create(): void {
     const { width, height } = this.cameras.main;
 
-    // 加载提示
-    const loadingText = this.add.text(width / 2, height / 2, '正在进入河畔牧场...', {
+    // 加载提示和进度条
+    const titleText = this.add.text(width / 2, height / 2 - 60, '正在进入河畔牧场...', {
       fontSize: '24px', color: '#d4c4a8',
       fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
     }).setOrigin(0.5).setDepth(200);
 
+    const barW = 280;
+    const barH = 16;
+    const barX = (width - barW) / 2;
+    const barY = height / 2;
+
+    // 背景条
+    const bgBar = this.add.graphics().fillStyle(0x333333, 0.8).fillRoundedRect(barX, barY, barW, barH, 8).setDepth(200);
+    // 进度条
+    const progressBar = this.add.graphics().setDepth(201);
+    const percentText = this.add.text(width / 2, barY + 30, '0%', {
+      fontSize: '16px', color: '#a89b8c',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
+    // 监听进度
+    this.load.on('progress', (value: number) => {
+      progressBar.clear();
+      progressBar.fillStyle(0xc9a96e, 1);
+      progressBar.fillRoundedRect(barX, barY, barW * value, barH, 8);
+      percentText.setText(`${Math.floor(value * 100)}%`);
+    });
+
     // 显式加载资源（避免 preload 在 scene.start 切换时卡住）
-    this.load.image('farm-bg', 'assets/farm/farm-bg.png');
+    this.load.image('farm-bg', 'assets/farm/farm-bg.jpg');
     this.load.image('goat-stand', 'assets/farm/goat-stand.png');
     this.load.image('goat-graze', 'assets/farm/goat-graze.png');
     this.load.image('goat-left', 'assets/farm/goat-walk-left.png');
@@ -83,8 +106,8 @@ export class MiniGameFarm extends Scene {
     this.load.image('wool-glowing', 'assets/farm/woolballshine.png');
     this.load.image('zhukuang', 'assets/farm/zhukuang.png');
     this.load.image('comb', 'assets/farm/comb2.png');
-    this.load.audio('farm-bgm', 'assets/audio/farm-background.mp3');
     this.load.audio('farm-intro', 'assets/audio/牧场开场.mp3');
+    this.load.audio('sheep-bleat', 'assets/audio/羊叫.mp3');
 
     // 容错：单个文件加载失败不阻塞
     this.load.on('loaderror', (file: any) => {
@@ -92,7 +115,10 @@ export class MiniGameFarm extends Scene {
     });
 
     this.load.once('complete', () => {
-      loadingText.destroy();
+      titleText.destroy();
+      bgBar.destroy();
+      progressBar.destroy();
+      percentText.destroy();
       this.renderScene();
     });
 
@@ -107,8 +133,6 @@ export class MiniGameFarm extends Scene {
     this.events.on('shutdown', () => {
       this.game.canvas.style.cursor = "url('assets/hub/cursor-brush-32.png') 2 28, auto";
     });
-
-    playBgm(this, 'farm-bgm', 0.4);
 
     this.showIntro();
     this.cameras.main.fadeIn(500, 0x1a, 0x1a, 0x2e);
@@ -188,6 +212,7 @@ export class MiniGameFarm extends Scene {
   // ================================================================
   private startGame(): void {
     this.farmState = FarmState.PLAYING;
+    playBgm(this, 'main-bgm', 0.4);
     const { width, height } = this.cameras.main;
     this.totalWool = 0; this.premiumWool = 0; this.timeLeft = 45;
     this.animalList = [];
@@ -348,6 +373,7 @@ export class MiniGameFarm extends Scene {
       woolYielded: 0, maxYield: 5 + Math.floor(Math.random() * 8),
       stateTimer: 1000 + Math.random() * 3000,
       direction: dir,
+      hasBleated: false,
     });
   }
 
@@ -394,6 +420,7 @@ export class MiniGameFarm extends Scene {
         maxYield: 5 + Math.floor(Math.random() * 8),
         stateTimer: 1500 + Math.random() * 2000, // 先走一段再切换状态
         direction: 1,
+        hasBleated: false,
       });
     }
   }
@@ -424,6 +451,11 @@ export class MiniGameFarm extends Scene {
   // ================================================================
   private collectWool(ad: AnimalData): void {
     ad.woolYielded++;
+    // 每只羊只叫一次
+    if (ad.type === 'goat' && !ad.hasBleated) {
+      ad.hasBleated = true;
+      this.sound.play('sheep-bleat', { volume: 0.6, detune: Math.floor(Math.random() * 200) - 100 });
+    }
     const isPremium = Math.random() < 0.2;
     if (isPremium) this.premiumWool++;
     this.totalWool++;
@@ -491,6 +523,7 @@ export class MiniGameFarm extends Scene {
     ad.maxYield = 5 + Math.floor(Math.random() * 8);
     ad.speed = 0.12 + Math.random() * 0.25;
     ad.stateTimer = 1000 + Math.random() * 3000;
+    ad.hasBleated = false;
     ad.state = dir > 0 ? AnimalState.WALKING_RIGHT : AnimalState.WALKING_LEFT;
     ad.container.setPosition(ad.x, ad.y).setAlpha(1).setScale(1);
     ad.grassIcon.setVisible(false);

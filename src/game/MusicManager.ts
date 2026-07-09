@@ -125,10 +125,8 @@ export function createMusicToggleBtn(
     slash.setVisible(nowMuted);
     if (!nowMuted) {
       const sceneKey = scene.scene.key;
-      if (sceneKey === 'HubScene') {
+      if (sceneKey === 'HubScene' || sceneKey === 'MiniGameFarm' || sceneKey === 'MiniGameBamboo') {
         playBgm(scene, 'main-bgm');
-      } else if (sceneKey === 'MiniGameFarm') {
-        playBgm(scene, 'farm-bgm');
       }
     }
   });

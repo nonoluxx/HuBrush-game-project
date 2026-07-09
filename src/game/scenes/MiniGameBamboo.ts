@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { playBgm } from '../MusicManager';
 
 // ── 场景子状态 ──
 const enum BambooState {
@@ -51,22 +52,41 @@ export class MiniGameBamboo extends Scene {
   create(): void {
     const { width, height } = this.cameras.main;
 
-    const loadingText = this.add.text(width / 2, height / 2, '正在进入天目竹林...', {
+    const titleText = this.add.text(width / 2, height / 2 - 60, '正在进入天目竹林...', {
       fontSize: '24px', color: '#d4c4a8',
       fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
     }).setOrigin(0.5).setDepth(200);
 
-    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.png');
+    const barW = 280, barH = 16, barX = (width - barW) / 2, barY = height / 2;
+    const bgBar = this.add.graphics().fillStyle(0x333333, 0.8).fillRoundedRect(barX, barY, barW, barH, 8).setDepth(200);
+    const progressBar = this.add.graphics().setDepth(201);
+    const percentText = this.add.text(width / 2, barY + 30, '0%', {
+      fontSize: '16px', color: '#a89b8c',
+      fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif',
+    }).setOrigin(0.5).setDepth(200);
+
+    this.load.on('progress', (value: number) => {
+      progressBar.clear();
+      progressBar.fillStyle(0xc9a96e, 1);
+      progressBar.fillRoundedRect(barX, barY, barW * value, barH, 8);
+      percentText.setText(`${Math.floor(value * 100)}%`);
+    });
+
+    this.load.image('bamboo-bg', 'assets/bamboo/bamboo-bg.jpg');
     this.load.image('knife', 'assets/bamboo/knife.png');
     this.load.image('bamboo-green', 'assets/bamboo/bamboogreen2.png');
     this.load.image('bamboo-brown', 'assets/bamboo/bamboobrown2.png');
+    this.load.audio('bamboo-cut', 'assets/audio/劈竹2.mp3');
 
     this.load.on('loaderror', (file: any) => {
       console.warn('[Bamboo] 加载失败:', file.key);
     });
 
     this.load.once('complete', () => {
-      loadingText.destroy();
+      titleText.destroy();
+      bgBar.destroy();
+      progressBar.destroy();
+      percentText.destroy();
       this.renderScene();
     });
 
@@ -152,6 +172,7 @@ export class MiniGameBamboo extends Scene {
   // ================================================================
   private startGame(): void {
     this.gameState = BambooState.PLAYING;
+    playBgm(this, 'main-bgm', 0.4);
     const { width } = this.cameras.main;
     this.totalCut = 0; this.goodCut = 0; this.timeLeft = 45;
     this.bambooList = []; this.spawnTimer = 0;
@@ -339,6 +360,7 @@ export class MiniGameBamboo extends Scene {
     b.cut = true;
     this.totalCut++;
     if (b.isGood) this.goodCut++;
+    this.sound.play('bamboo-cut', { volume: 0.5 });
 
     const st = this.getUIText('scoreText');
     if (st) st.setText(`🔪 劈开: ${this.totalCut}  |  🎋 良材: ${this.goodCut}`);
