@@ -6,6 +6,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+  /* iOS 安全区域 */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -15,20 +22,56 @@ body {
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
+  /* 禁止 iOS 橡皮筋效果 */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #app {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 #game-container {
   width: 100%;
   height: 100%;
+}
+
+/* 横屏提示 */
+#orientation-hint {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #1a1a2e;
+  z-index: 9999;
+  color: #c9a96e;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+#orientation-hint::before {
+  content: "📱";
+  font-size: 48px;
+  display: block;
+  animation: rotate-phone 1.5s ease-in-out infinite;
+}
+@keyframes rotate-phone {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
 }
 
 canvas {

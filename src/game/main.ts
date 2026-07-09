@@ -28,6 +28,11 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Scale.CENTER_BOTH,
   },
 
+  // 输入：鼠标 + 多点触控（移动端必需）
+  input: {
+    activePointers: 3,
+  },
+
   parent: 'game-container',
   backgroundColor: '#1a1a2e',
 

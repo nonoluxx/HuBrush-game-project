@@ -2,14 +2,37 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
   <link rel="stylesheet" href="/style/main.css">
   <title>湖笔技艺 · 非遗研学</title>
 </head>
 <body>
   <div id="app">
     <div id="game-container"></div>
+    <div id="orientation-hint" style="display:none">
+      <div>请旋转设备</div>
+      <div>横屏体验更佳</div>
+    </div>
   </div>
+  <script>
+    // 移动端横屏检测
+    function checkOrientation() {
+      var hint = document.getElementById('orientation-hint');
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      var isPortrait = window.innerWidth < window.innerHeight;
+      if (isMobile && isPortrait) {
+        hint.style.display = 'flex';
+      } else {
+        hint.style.display = 'none';
+      }
+    }
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+    checkOrientation();
+  </script>
   <script type="module" src="./src/main.ts"></script>
 </body>
 </html>

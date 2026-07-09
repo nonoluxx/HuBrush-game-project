@@ -320,8 +320,8 @@ export class HubScene extends Scene {
       container.setAlpha(1); // 所有建筑常亮，小朋友能看清
       container.setDepth(40);
 
-      // 点击热区
-      const hitArea = this.add.zone(0, 0, 100, 120).setInteractive();
+      // 点击热区（移动端手指至少 44px，这里放大到 120x140 确保好点）
+      const hitArea = this.add.zone(0, 0, 120, 140).setInteractive();
       container.add([hitArea]);
 
       hitArea.on('pointerdown', () => {
