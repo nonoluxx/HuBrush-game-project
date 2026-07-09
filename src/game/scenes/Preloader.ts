@@ -46,7 +46,7 @@ export class Preloader extends Scene {
     });
 
     // HubScene 主背景（江南水乡全景河道）
-    this.load.image('river-bg', 'assets/hub/river-bg.png');
+    this.load.image('river-bg', 'assets/hub/river-bg.jpg');
 
     // 首页建筑精灵图（已去背景透明 PNG）
     this.load.image('sprite-dock', 'assets/hub/dock.png');
@@ -56,6 +56,8 @@ export class Preloader extends Scene {
     this.load.image('sprite-shop', 'assets/hub/shop.png');
     this.load.image('sprite-pavilion', 'assets/hub/pavilion.png');
     this.load.image('sprite-boat', 'assets/hub/boat.png');
+    // 主背景音乐（2.9MB）放到预加载阶段，进度条可见可预期
+    this.load.audio('main-bgm', 'assets/audio/main-background.mp3');
   }
 
   create(): void {

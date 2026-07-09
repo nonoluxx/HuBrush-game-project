@@ -55,8 +55,7 @@ export class HubScene extends Scene {
   }
 
   preload(): void {
-    // 背景音乐按需加载（不阻塞启动）
-    this.load.audio('main-bgm', 'assets/audio/main-background.mp3');
+    // 背景图片和音频已经在 Preloader 预加载，这里无需重复
   }
 
   create(): void {
