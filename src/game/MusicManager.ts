@@ -44,18 +44,30 @@ export function playBgm(scene: Scene, key: string, volume = 0.5): void {
   const music = scene.sound.add(key, { loop: true, volume });
   bgmInstances.set(key, music);
 
-  // 音频上下文被浏览器锁定（自动播放策略），等待首次用户交互后播放
+  // 尝试播放
+  const tryPlay = () => {
+    if (isMusicMuted(scene) || !bgmInstances.has(key)) return;
+    // 如果 AudioContext 处于 suspended 状态，尝试恢复
+    const ctx = (scene.sound as any).context;
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().then(() => {
+        if (!isMusicMuted(scene) && bgmInstances.has(key)) music.play();
+      });
+    } else {
+      music.play();
+    }
+  };
+
+  // 音频上下文被浏览器锁定，等待首次用户交互后播放
   if (scene.sound.locked) {
     const playOnUnlock = () => {
       scene.sound.unlock();
-      if (!isMusicMuted(scene) && bgmInstances.has(key)) {
-        music.play();
-      }
+      tryPlay();
       document.removeEventListener('pointerdown', playOnUnlock);
     };
     document.addEventListener('pointerdown', playOnUnlock);
   } else {
-    music.play();
+    tryPlay();
   }
 }
 
